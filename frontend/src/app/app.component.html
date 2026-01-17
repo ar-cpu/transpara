@@ -1,0 +1,451 @@
+<div class="h-screen flex flex-col bg-slate-50 font-sans">
+
+  <!-- professional header -->
+  <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+
+        <div class="flex items-center gap-6">
+          <!-- logo section -->
+          <div class="h-12 w-auto flex-shrink-0">
+            @if (!logoLoadError()) {
+            <img src="assets/logo.jpg" alt="Transpara Logo" class="h-full object-contain" (error)="handleLogoError()">
+            } @else {
+            <!-- fallback if image not found -->
+            <div class="h-12 w-12 bg-slate-900 text-white rounded flex items-center justify-center font-bold text-xl">
+              <i class="fas fa-layer-group"></i>
+            </div>
+            }
+          </div>
+
+          <div class="h-8 w-px bg-slate-200"></div>
+
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900 tracking-tight font-sans">Transpara</h1>
+            <p class="text-xs text-slate-500 uppercase tracking-wide font-medium">Transparency, Honesty, Educational
+              Excellence</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- main workspace -->
+  <main class="flex-grow overflow-y-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto space-y-8">
+
+      <!-- humble intro -->
+      <div class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900 mb-2">Analysis Dashboard</h2>
+        <p class="text-slate-600 text-sm leading-relaxed max-w-3xl">
+          This tool utilizes machine learning algorithms to analyze text, audio, and video content for potential
+          political leaning.
+          Results should be used for research and informational purposes. Please select an input method below to begin.
+        </p>
+      </div>
+
+      <!-- main input interface -->
+      <div
+        class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex flex-col md:flex-row min-h-[500px]">
+
+        <!-- sidebar navigation -->
+        <div class="w-full md:w-64 bg-slate-50 border-r border-slate-200 flex flex-col">
+          <div class="p-4 border-b border-slate-200">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Input Methods</span>
+          </div>
+          <nav class="flex-1 overflow-y-auto py-2">
+            <button (click)="setTab('text')"
+              class="w-full text-left px-4 py-3 text-sm font-medium transition-colors border-l-4 flex items-center gap-3"
+              [class.bg-white]="currentTab() === 'text'" [class.border-blue-600]="currentTab() === 'text'"
+              [class.text-blue-700]="currentTab() === 'text'" [class.border-transparent]="currentTab() !== 'text'"
+              [class.text-slate-600]="currentTab() !== 'text'" [class.hover:bg-slate-100]="currentTab() !== 'text'">
+              <i class="fas fa-align-left w-5 text-center"></i>
+              Text Input
+            </button>
+
+            <button (click)="setTab('audio-upload')"
+              class="w-full text-left px-4 py-3 text-sm font-medium transition-colors border-l-4 flex items-center gap-3"
+              [class.bg-white]="currentTab() === 'audio-upload'"
+              [class.border-blue-600]="currentTab() === 'audio-upload'"
+              [class.text-blue-700]="currentTab() === 'audio-upload'"
+              [class.border-transparent]="currentTab() !== 'audio-upload'"
+              [class.text-slate-600]="currentTab() !== 'audio-upload'"
+              [class.hover:bg-slate-100]="currentTab() !== 'audio-upload'">
+              <i class="fas fa-file-audio w-5 text-center"></i>
+              Audio Upload
+            </button>
+
+            <button (click)="setTab('video-upload')"
+              class="w-full text-left px-4 py-3 text-sm font-medium transition-colors border-l-4 flex items-center gap-3"
+              [class.bg-white]="currentTab() === 'video-upload'"
+              [class.border-blue-600]="currentTab() === 'video-upload'"
+              [class.text-blue-700]="currentTab() === 'video-upload'"
+              [class.border-transparent]="currentTab() !== 'video-upload'"
+              [class.text-slate-600]="currentTab() !== 'video-upload'"
+              [class.hover:bg-slate-100]="currentTab() !== 'video-upload'">
+              <i class="fas fa-file-video w-5 text-center"></i>
+              Video Upload
+            </button>
+
+            <button (click)="setTab('live-audio')"
+              class="w-full text-left px-4 py-3 text-sm font-medium transition-colors border-l-4 flex items-center gap-3"
+              [class.bg-white]="currentTab() === 'live-audio'" [class.border-blue-600]="currentTab() === 'live-audio'"
+              [class.text-blue-700]="currentTab() === 'live-audio'"
+              [class.border-transparent]="currentTab() !== 'live-audio'"
+              [class.text-slate-600]="currentTab() !== 'live-audio'"
+              [class.hover:bg-slate-100]="currentTab() !== 'live-audio'">
+              <i class="fas fa-microphone w-5 text-center"></i>
+              Live Audio
+            </button>
+
+            <button (click)="setTab('live-video')"
+              class="w-full text-left px-4 py-3 text-sm font-medium transition-colors border-l-4 flex items-center gap-3"
+              [class.bg-white]="currentTab() === 'live-video'" [class.border-blue-600]="currentTab() === 'live-video'"
+              [class.text-blue-700]="currentTab() === 'live-video'"
+              [class.border-transparent]="currentTab() !== 'live-video'"
+              [class.text-slate-600]="currentTab() !== 'live-video'"
+              [class.hover:bg-slate-100]="currentTab() !== 'live-video'">
+              <i class="fas fa-video w-5 text-center"></i>
+              Live Video
+            </button>
+
+            <button (click)="setTab('pdf')"
+              class="w-full text-left px-4 py-3 text-sm font-medium transition-colors border-l-4 flex items-center gap-3"
+              [class.bg-white]="currentTab() === 'pdf'" [class.border-blue-600]="currentTab() === 'pdf'"
+              [class.text-blue-700]="currentTab() === 'pdf'" [class.border-transparent]="currentTab() !== 'pdf'"
+              [class.text-slate-600]="currentTab() !== 'pdf'" [class.hover:bg-slate-100]="currentTab() !== 'pdf'">
+              <i class="fas fa-file-pdf w-5 text-center"></i>
+              PDF Document
+            </button>
+
+            <button (click)="setTab('docx')"
+              class="w-full text-left px-4 py-3 text-sm font-medium transition-colors border-l-4 flex items-center gap-3"
+              [class.bg-white]="currentTab() === 'docx'" [class.border-blue-600]="currentTab() === 'docx'"
+              [class.text-blue-700]="currentTab() === 'docx'" [class.border-transparent]="currentTab() !== 'docx'"
+              [class.text-slate-600]="currentTab() !== 'docx'" [class.hover:bg-slate-100]="currentTab() !== 'docx'">
+              <i class="fas fa-file-word w-5 text-center"></i>
+              Word Document
+            </button>
+          </nav>
+        </div>
+
+        <!-- content area -->
+        <div class="flex-1 p-8 bg-white relative">
+
+          <!-- loading overlay -->
+          @if(isLoading()) {
+          <div class="absolute inset-0 bg-white/90 z-20 flex flex-col items-center justify-center backdrop-blur-sm">
+            <div class="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+            <p class="text-slate-600 font-medium animate-pulse">Processing data...</p>
+          </div>
+          }
+
+          <!-- text input -->
+          @if (currentTab() === 'text') {
+          <div class="h-full flex flex-col">
+            <h3 class="text-lg font-medium text-slate-900 mb-4">Text Analysis</h3>
+            <textarea [(ngModel)]="textInput"
+              class="flex-1 w-full p-4 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-slate-800 placeholder-slate-400 resize-none text-base mb-4"
+              placeholder="Paste the text content you wish to analyze here..."></textarea>
+            <div class="flex justify-end">
+              <button (click)="analyzeText()" [disabled]="isLoading() || !textInput()"
+                class="bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white font-medium py-2.5 px-6 rounded shadow-sm transition-all flex items-center gap-2">
+                Analyze Text <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+          }
+
+          <!-- file uploads -->
+          @if (['audio-upload', 'video-upload', 'pdf', 'docx'].includes(currentTab())) {
+          <div class="h-full flex flex-col items-center justify-center">
+            <div
+              class="w-full max-w-lg border-2 border-dashed border-slate-300 rounded-xl p-12 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 transition-all cursor-pointer text-center group"
+              (click)="fileInput.click()">
+              <input #fileInput type="file" class="hidden"
+                [accept]="currentTab() === 'audio-upload' ? 'audio/*' : currentTab() === 'video-upload' ? 'video/*' : currentTab() === 'pdf' ? '.pdf' : '.docx'"
+                (change)="handleFileUpload($event, currentTab() === 'pdf' ? 'pdf' : currentTab() === 'docx' ? 'docx' : currentTab().includes('audio') ? 'audio' : 'video')">
+              <div
+                class="w-20 h-20 bg-white shadow-sm border border-slate-200 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+                <i class="fas fa-2x text-slate-400 group-hover:text-blue-500" [class.fa-cloud-upload-alt]="true"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-slate-800 mb-2">Upload File</h3>
+              <p class="text-slate-500 text-sm mb-6">Click to select a {{ currentTab().includes('pdf') ? 'PDF' :
+                currentTab().includes('docx') ? 'Word Document' : 'file' }} from your computer</p>
+              <span
+                class="inline-block px-4 py-2 bg-white border border-slate-300 rounded text-sm text-slate-600 font-medium group-hover:border-blue-400 group-hover:text-blue-600">Select
+                File</span>
+            </div>
+          </div>
+          }
+
+          <!-- live recording -->
+          @if (currentTab() === 'live-audio' || currentTab() === 'live-video') {
+          <div class="h-full flex flex-col items-center justify-center">
+
+            @if (currentTab() === 'live-video') {
+            <div
+              class="relative w-full max-w-xl aspect-video bg-black rounded-lg overflow-hidden shadow-lg mb-8 border border-slate-800">
+              <video #videoPreview autoplay muted playsinline class="w-full h-full object-cover"></video>
+              <div
+                class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2"
+                *ngIf="isRecording()">
+                <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div> REC
+              </div>
+            </div>
+            } @else {
+            <div
+              class="w-40 h-40 bg-slate-100 rounded-full flex items-center justify-center mb-8 border-4 transition-colors duration-500"
+              [class.border-red-100]="isRecording()" [class.border-slate-100]="!isRecording()">
+              @if(isRecording()) {
+              <div class="flex items-center gap-1 h-16">
+                <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.5s_ease-in-out_infinite] h-8"></div>
+                <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.7s_ease-in-out_infinite] h-12"></div>
+                <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.6s_ease-in-out_infinite] h-6"></div>
+                <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-10"></div>
+                <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.5s_ease-in-out_infinite] h-8"></div>
+              </div>
+              } @else {
+              <i class="fas fa-microphone text-5xl text-slate-300"></i>
+              }
+            </div>
+            }
+
+            <div class="text-center space-y-6">
+              <div class="text-4xl font-mono font-light text-slate-800 tabular-nums">
+                {{ recordingFormattedTime() }}
+              </div>
+
+              <button (click)="toggleRecording(currentTab() === 'live-video' ? 'video' : 'audio')"
+                class="group relative inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white transition-all duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2"
+                [class.bg-red-600]="isRecording()" [class.hover:bg-red-700]="isRecording()"
+                [class.focus:ring-red-500]="isRecording()" [class.bg-slate-900]="!isRecording()"
+                [class.hover:bg-slate-800]="!isRecording()" [class.focus:ring-slate-900]="!isRecording()">
+                <span class="mr-2">
+                  <i class="fas" [class.fa-stop]="isRecording()" [class.fa-circle]="!isRecording()"></i>
+                </span>
+                {{ isRecording() ? 'Stop Recording' : 'Start Recording' }}
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- error message -->
+      @if (errorMessage()) {
+      <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r shadow-sm">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <i class="fas fa-exclamation-circle text-red-500"></i>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-red-700 font-medium">{{ errorMessage() }}</p>
+          </div>
+        </div>
+      </div>
+      }
+
+      <!-- results section -->
+      @if (result(); as res) {
+      <section class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden animate-fade-in-up mb-10">
+        <div class="bg-slate-900 px-8 py-6 border-b border-slate-800 flex justify-between items-center">
+          <h2 class="text-lg font-semibold text-white flex items-center gap-3">
+            <i class="fas fa-chart-bar text-blue-400"></i> Analysis Results
+          </h2>
+          <button class="text-slate-400 hover:text-white transition-colors" (click)="result.set(null)">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="p-8">
+          <!-- anti-american/extremist warning banner -->
+          @if (res.is_extremist && (res.extremist_content?.length ?? 0) > 0) {
+          <div class="mb-8 bg-red-900 border-2 border-red-600 rounded-xl p-6 shadow-lg animate-pulse-slow">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-3xl text-white"></i>
+              </div>
+              <div>
+                <h3 class="text-2xl font-black text-white uppercase tracking-wide">Anti-American Content Detected</h3>
+                <p class="text-red-200 text-sm mt-1">This content contains extremist, hateful, or anti-American rhetoric</p>
+              </div>
+            </div>
+            <div class="bg-red-950 rounded-lg p-4 mt-4">
+              <h4 class="text-xs font-bold text-red-300 uppercase tracking-wider mb-3">Flagged Content:</h4>
+              <div class="space-y-2">
+                @for (item of res.extremist_content; track item.text) {
+                <div class="bg-red-900/50 border border-red-700 rounded-lg p-4">
+                  <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <span class="px-2 py-1 bg-red-600 text-white text-xs font-bold rounded uppercase">{{ item.category }}</span>
+                      <span class="px-2 py-1 bg-red-800 text-red-200 text-xs font-mono rounded border border-red-600">Pattern: "{{ item.pattern_matched }}"</span>
+                    </div>
+                    <p class="text-red-100 text-sm mt-1">"{{ item.text }}"</p>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+            <!-- metrics column -->
+            <div class="lg:col-span-5 space-y-8">
+
+              <!-- main prediction -->
+              <div class="bg-slate-50 rounded-lg p-6 border border-slate-200 text-center"
+                [class.bg-red-100]="res.is_extremist" [class.border-red-300]="res.is_extremist">
+                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4"
+                  [class.text-red-600]="res.is_extremist">
+                  {{ res.is_extremist ? 'Content Classification' : 'Detected Lean' }}
+                </h3>
+                @if (res.is_extremist) {
+                <div class="inline-block px-6 py-2 rounded-full text-2xl font-bold tracking-tight border shadow-sm mb-3 bg-red-600 text-white border-red-700">
+                  ANTI-AMERICAN
+                </div>
+                <p class="text-sm text-red-600 font-semibold">
+                  Extremist content detected
+                </p>
+                } @else {
+                <div class="inline-block px-6 py-2 rounded-full text-2xl font-bold tracking-tight border shadow-sm mb-3"
+                  [class.bg-blue-50]="res.prediction === 'left'" [class.text-blue-700]="res.prediction === 'left'"
+                  [class.border-blue-200]="res.prediction === 'left'" [class.bg-red-50]="res.prediction === 'right'"
+                  [class.text-red-700]="res.prediction === 'right'" [class.border-red-200]="res.prediction === 'right'"
+                  [class.bg-purple-50]="res.prediction === 'center'"
+                  [class.text-purple-700]="res.prediction === 'center'"
+                  [class.border-purple-200]="res.prediction === 'center'">
+                  {{ res.prediction | uppercase }}
+                </div>
+                <p class="text-sm text-slate-500">
+                  Confidence: <span class="font-semibold text-slate-800">{{ (res.confidence * 100) | number:'1.1-1'
+                    }}%</span>
+                </p>
+                }
+              </div>
+
+              <!-- probability distribution -->
+              <div>
+                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Probability Distribution</h3>
+                <div class="space-y-4">
+                  <!-- left -->
+                  <div>
+                    <div class="flex justify-between text-xs font-medium text-slate-600 mb-1">
+                      <span>Left</span>
+                      <span>{{ (res.probabilities.left * 100) | number:'1.0-0' }}%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                      <div class="bg-blue-600 h-2 rounded-full transition-all duration-1000"
+                        [style.width.%]="res.probabilities.left * 100"></div>
+                    </div>
+                  </div>
+                  <!-- center -->
+                  <div>
+                    <div class="flex justify-between text-xs font-medium text-slate-600 mb-1">
+                      <span>Center</span>
+                      <span>{{ (res.probabilities.center * 100) | number:'1.0-0' }}%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                      <div class="bg-purple-600 h-2 rounded-full transition-all duration-1000"
+                        [style.width.%]="res.probabilities.center * 100"></div>
+                    </div>
+                  </div>
+                  <!-- right -->
+                  <div>
+                    <div class="flex justify-between text-xs font-medium text-slate-600 mb-1">
+                      <span>Right</span>
+                      <span>{{ (res.probabilities.right * 100) | number:'1.0-0' }}%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                      <div class="bg-red-600 h-2 rounded-full transition-all duration-1000"
+                        [style.width.%]="res.probabilities.right * 100"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- content column -->
+            <div class="lg:col-span-7 space-y-8">
+
+              <!-- interpretation -->
+              <div>
+                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3"
+                  [class.text-red-600]="res.is_extremist">System Interpretation</h3>
+                @if (res.is_extremist) {
+                <p class="text-red-700 text-sm leading-7 font-semibold">
+                  <i class="fas fa-exclamation-circle mr-2"></i>
+                  WARNING: This content has been flagged as containing anti-American, extremist, or hateful rhetoric.
+                  {{ res.extremist_content?.length }} flagged section(s) detected including:
+                  {{ getExtremistCategories(res.extremist_content) }}.
+                </p>
+                } @else {
+                <p class="text-slate-700 text-sm leading-7">
+                  {{ res.interpretation }}
+                </p>
+                }
+              </div>
+
+              <!-- Sentence-Level Highlighting -->
+              @if (result()?.sentence_analysis && result()!.sentence_analysis!.length > 0) {
+              <div class="mt-8 p-6 bg-slate-50 rounded-lg border border-slate-200">
+                <h3 class="text-lg font-semibold text-slate-800 mb-4">Sentence-Level Analysis</h3>
+
+                <!-- Legend -->
+                <div class="flex gap-4 mb-4 text-sm">
+                  <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded" style="background-color: rgba(59, 130, 246, 0.2);"></div>
+                    <span class="text-slate-600">Left</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded" style="background-color: rgba(148, 163, 184, 0.2);"></div>
+                    <span class="text-slate-600">Center</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded" style="background-color: rgba(239, 68, 68, 0.2);"></div>
+                    <span class="text-slate-600">Right</span>
+                  </div>
+                </div>
+
+                <!-- Highlighted Text -->
+                <div class="text-base leading-relaxed">
+                  @for (sentence of result()!.sentence_analysis!; track sentence.text) {
+                  <span class="inline-block px-2 py-1 rounded mr-1 mb-1 transition-all hover:shadow-sm"
+                    [style.background-color]="
+                          sentence.prediction === 'left' ? 'rgba(59, 130, 246, 0.2)' :
+                          sentence.prediction === 'right' ? 'rgba(239, 68, 68, 0.2)' :
+                          'rgba(148, 163, 184, 0.2)'
+                        " [title]="sentence.prediction + ' (' + (sentence.confidence * 100).toFixed(1) + '%)'">
+                    {{ sentence.text }}
+                  </span>
+                  }
+                </div>
+              </div>
+              }
+
+              <!-- Transcription (if available) -->
+              @if(res.transcription || res.text) {
+              <div class="pt-6 border-t border-slate-100">
+                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+                  {{ res.transcription ? 'Audio Transcription' : 'Analyzed Text' }}
+                </h3>
+                <div class="bg-slate-50 rounded p-4 border border-slate-200 max-h-48 overflow-y-auto">
+                  <p class="text-slate-500 italic text-xs leading-relaxed font-serif">
+                    "{{ res.transcription || res.text }}"
+                  </p>
+                </div>
+              </div>
+              }
+            </div>
+
+          </div>
+        </div>
+      </section>
+      }
+
+    </div>
+  </main>
+</div>

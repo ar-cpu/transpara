@@ -1,0 +1,314 @@
+<div class="h-screen flex flex-col bg-slate-50 font-sans">
+  
+  <!-- Professional Header -->
+  <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        
+        <div class="flex items-center gap-6">
+          <!-- LOGO SECTION -->
+          <div class="h-12 w-auto flex-shrink-0">
+             @if (!logoLoadError()) {
+               <img src="assets/logo.jpg" alt="Transpara Logo" class="h-full object-contain" (error)="handleLogoError()">
+             } @else {
+               <!-- Fallback if image not found -->
+               <div class="h-12 w-12 bg-slate-900 text-white rounded flex items-center justify-center font-bold text-xl">
+                  <i class="fas fa-layer-group"></i>
+               </div>
+             }
+          </div>
+
+          <div class="h-8 w-px bg-slate-200"></div>
+
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900 tracking-tight font-sans">Transpara</h1>
+            <p class="text-xs text-slate-500 uppercase tracking-wide font-medium">Transparency, Honesty, Educational Excellence</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="flex-grow overflow-y-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto space-y-8">
+      
+      <!-- Humble Intro -->
+      <div class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900 mb-2">Analysis Dashboard</h2>
+        <p class="text-slate-600 text-sm leading-relaxed max-w-3xl">
+          This tool utilizes machine learning algorithms to analyze text, audio, and video content for potential political leaning. 
+          Results should be used for research and informational purposes. Please select an input method below to begin.
+        </p>
+      </div>
+
+      <!-- Main Input Interface -->
+      <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex flex-col md:flex-row min-h-[500px]">
+        
+        <!-- Sidebar Navigation -->
+        <div class="w-full md:w-64 bg-slate-50 border-r border-slate-200 flex flex-col">
+          <div class="p-4 border-b border-slate-200">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Input Methods</span>
+          </div>
+          <nav class="flex-1 overflow-y-auto py-2">
+            <button 
+              *ngFor="let tab of ['text', 'audio', 'video', 'live-audio', 'live-video', 'pdf', 'docx']"
+              (click)="setTab(tab === 'audio' ? 'audio-upload' : tab === 'video' ? 'video-upload' : tab)"
+              class="w-full text-left px-4 py-3 text-sm font-medium transition-colors border-l-4 flex items-center gap-3"
+              [class.bg-white]="currentTab().includes(tab)"
+              [class.border-blue-600]="currentTab().includes(tab)"
+              [class.text-blue-700]="currentTab().includes(tab)"
+              [class.border-transparent]="!currentTab().includes(tab)"
+              [class.text-slate-600]="!currentTab().includes(tab)"
+              [class.hover:bg-slate-100]="!currentTab().includes(tab)"
+            >
+              <i class="fas w-5 text-center" 
+                 [class.fa-align-left]="tab === 'text'"
+                 [class.fa-file-audio]="tab === 'audio'"
+                 [class.fa-file-video]="tab === 'video'"
+                 [class.fa-microphone]="tab === 'live-audio'"
+                 [class.fa-video]="tab === 'live-video'"
+                 [class.fa-file-pdf]="tab === 'pdf'"
+                 [class.fa-file-word]="tab === 'docx'"
+              ></i>
+              {{ tab.replace('audio', 'Audio').replace('video', 'Video').replace('text', 'Text Input').replace('live-', 'Live ').replace('upload', ' File').replace('pdf', 'PDF Document').replace('docx', 'Word Document') }}
+            </button>
+          </nav>
+        </div>
+
+        <!-- Content Area -->
+        <div class="flex-1 p-8 bg-white relative">
+          
+          <!-- Loading Overlay -->
+          @if(isLoading()) {
+            <div class="absolute inset-0 bg-white/90 z-20 flex flex-col items-center justify-center backdrop-blur-sm">
+              <div class="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+              <p class="text-slate-600 font-medium animate-pulse">Processing data...</p>
+            </div>
+          }
+
+          <!-- Text Input -->
+          @if (currentTab() === 'text') {
+            <div class="h-full flex flex-col">
+              <h3 class="text-lg font-medium text-slate-900 mb-4">Text Analysis</h3>
+              <textarea 
+                [(ngModel)]="textInput" 
+                class="flex-1 w-full p-4 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-slate-800 placeholder-slate-400 resize-none text-base mb-4"
+                placeholder="Paste the text content you wish to analyze here..."
+              ></textarea>
+              <div class="flex justify-end">
+                <button 
+                  (click)="analyzeText()" 
+                  [disabled]="isLoading() || !textInput()"
+                  class="bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white font-medium py-2.5 px-6 rounded shadow-sm transition-all flex items-center gap-2"
+                >
+                  Analyze Text <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          }
+
+          <!-- File Uploads -->
+          @if (['audio-upload', 'video-upload', 'pdf', 'docx'].includes(currentTab())) {
+            <div class="h-full flex flex-col items-center justify-center">
+              <div class="w-full max-w-lg border-2 border-dashed border-slate-300 rounded-xl p-12 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 transition-all cursor-pointer text-center group"
+                   (click)="fileInput.click()">
+                <input 
+                  #fileInput 
+                  type="file" 
+                  class="hidden" 
+                  [accept]="currentTab() === 'audio-upload' ? 'audio/*' : currentTab() === 'video-upload' ? 'video/*' : currentTab() === 'pdf' ? '.pdf' : '.docx'"
+                  (change)="handleFileUpload($event, currentTab() === 'pdf' ? 'pdf' : currentTab() === 'docx' ? 'docx' : currentTab().includes('audio') ? 'audio' : 'video')"
+                >
+                <div class="w-20 h-20 bg-white shadow-sm border border-slate-200 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+                  <i class="fas fa-2x text-slate-400 group-hover:text-blue-500"
+                     [class.fa-cloud-upload-alt]="true"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-800 mb-2">Upload File</h3>
+                <p class="text-slate-500 text-sm mb-6">Click to select a {{ currentTab().includes('pdf') ? 'PDF' : currentTab().includes('docx') ? 'Word Document' : 'file' }} from your computer</p>
+                <span class="inline-block px-4 py-2 bg-white border border-slate-300 rounded text-sm text-slate-600 font-medium group-hover:border-blue-400 group-hover:text-blue-600">Select File</span>
+              </div>
+            </div>
+          }
+
+          <!-- Live Recording -->
+          @if (currentTab() === 'live-audio' || currentTab() === 'live-video') {
+            <div class="h-full flex flex-col items-center justify-center">
+              
+              @if (currentTab() === 'live-video') {
+                <div class="relative w-full max-w-xl aspect-video bg-black rounded-lg overflow-hidden shadow-lg mb-8 border border-slate-800">
+                  <video #videoPreview autoplay muted playsinline class="w-full h-full object-cover"></video>
+                  <div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2" *ngIf="isRecording()">
+                    <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div> REC
+                  </div>
+                </div>
+              } @else {
+                 <div class="w-40 h-40 bg-slate-100 rounded-full flex items-center justify-center mb-8 border-4 transition-colors duration-500"
+                      [class.border-red-100]="isRecording()"
+                      [class.border-slate-100]="!isRecording()">
+                    @if(isRecording()) {
+                       <div class="flex items-center gap-1 h-16">
+                         <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.5s_ease-in-out_infinite] h-8"></div>
+                         <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.7s_ease-in-out_infinite] h-12"></div>
+                         <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.6s_ease-in-out_infinite] h-6"></div>
+                         <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-10"></div>
+                         <div class="w-1.5 bg-red-500 rounded-full animate-[pulse_0.5s_ease-in-out_infinite] h-8"></div>
+                       </div>
+                    } @else {
+                       <i class="fas fa-microphone text-5xl text-slate-300"></i>
+                    }
+                 </div>
+              }
+
+              <div class="text-center space-y-6">
+                <div class="text-4xl font-mono font-light text-slate-800 tabular-nums">
+                  {{ recordingFormattedTime() }}
+                </div>
+                
+                <button 
+                  (click)="toggleRecording(currentTab() === 'live-video' ? 'video' : 'audio')"
+                  class="group relative inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white transition-all duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  [class.bg-red-600]="isRecording()"
+                  [class.hover:bg-red-700]="isRecording()"
+                  [class.focus:ring-red-500]="isRecording()"
+                  [class.bg-slate-900]="!isRecording()"
+                  [class.hover:bg-slate-800]="!isRecording()"
+                  [class.focus:ring-slate-900]="!isRecording()"
+                >
+                  <span class="mr-2">
+                     <i class="fas" [class.fa-stop]="isRecording()" [class.fa-circle]="!isRecording()"></i>
+                  </span>
+                  {{ isRecording() ? 'Stop Recording' : 'Start Recording' }}
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r shadow-sm">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <i class="fas fa-exclamation-circle text-red-500"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-red-700 font-medium">{{ errorMessage() }}</p>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Results Section -->
+      @if (result(); as res) {
+        <section class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden animate-fade-in-up mb-10">
+          <div class="bg-slate-900 px-8 py-6 border-b border-slate-800 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-white flex items-center gap-3">
+              <i class="fas fa-chart-bar text-blue-400"></i> Analysis Results
+            </h2>
+            <button class="text-slate-400 hover:text-white transition-colors" (click)="result.set(null)">
+               <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div class="p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+              
+              <!-- Metrics Column -->
+              <div class="lg:col-span-5 space-y-8">
+                
+                <!-- Main Prediction -->
+                <div class="bg-slate-50 rounded-lg p-6 border border-slate-200 text-center">
+                  <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Detected Lean</h3>
+                  <div class="inline-block px-6 py-2 rounded-full text-2xl font-bold tracking-tight border shadow-sm mb-3"
+                    [class.bg-blue-50]="res.prediction === 'left'"
+                    [class.text-blue-700]="res.prediction === 'left'"
+                    [class.border-blue-200]="res.prediction === 'left'"
+                    [class.bg-red-50]="res.prediction === 'right'"
+                    [class.text-red-700]="res.prediction === 'right'"
+                    [class.border-red-200]="res.prediction === 'right'"
+                    [class.bg-purple-50]="res.prediction === 'center'"
+                    [class.text-purple-700]="res.prediction === 'center'"
+                    [class.border-purple-200]="res.prediction === 'center'"
+                  >
+                    {{ res.prediction | uppercase }}
+                  </div>
+                  <p class="text-sm text-slate-500">
+                    Confidence: <span class="font-semibold text-slate-800">{{ (res.confidence * 100) | number:'1.1-1' }}%</span>
+                  </p>
+                </div>
+
+                <!-- Probability Distribution -->
+                <div>
+                  <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Probability Distribution</h3>
+                  <div class="space-y-4">
+                    <!-- Left -->
+                    <div>
+                       <div class="flex justify-between text-xs font-medium text-slate-600 mb-1">
+                          <span>Left</span>
+                          <span>{{ (res.probabilities.left * 100) | number:'1.0-0' }}%</span>
+                       </div>
+                       <div class="w-full bg-slate-100 rounded-full h-2">
+                          <div class="bg-blue-600 h-2 rounded-full transition-all duration-1000" [style.width.%]="res.probabilities.left * 100"></div>
+                       </div>
+                    </div>
+                    <!-- Center -->
+                    <div>
+                       <div class="flex justify-between text-xs font-medium text-slate-600 mb-1">
+                          <span>Center</span>
+                          <span>{{ (res.probabilities.center * 100) | number:'1.0-0' }}%</span>
+                       </div>
+                       <div class="w-full bg-slate-100 rounded-full h-2">
+                          <div class="bg-purple-600 h-2 rounded-full transition-all duration-1000" [style.width.%]="res.probabilities.center * 100"></div>
+                       </div>
+                    </div>
+                    <!-- Right -->
+                    <div>
+                       <div class="flex justify-between text-xs font-medium text-slate-600 mb-1">
+                          <span>Right</span>
+                          <span>{{ (res.probabilities.right * 100) | number:'1.0-0' }}%</span>
+                       </div>
+                       <div class="w-full bg-slate-100 rounded-full h-2">
+                          <div class="bg-red-600 h-2 rounded-full transition-all duration-1000" [style.width.%]="res.probabilities.right * 100"></div>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Content Column -->
+              <div class="lg:col-span-7 space-y-8">
+                 
+                 <!-- Interpretation -->
+                 <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">System Interpretation</h3>
+                    <p class="text-slate-700 text-sm leading-7">
+                       {{ res.interpretation }}
+                    </p>
+                 </div>
+
+                 <!-- Transcription / Text Excerpt -->
+                 @if(res.transcription || res.text) {
+                    <div class="pt-6 border-t border-slate-100">
+                       <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+                          {{ res.transcription ? 'Audio Transcription' : 'Analyzed Text' }}
+                       </h3>
+                       <div class="bg-slate-50 rounded p-4 border border-slate-200 max-h-48 overflow-y-auto">
+                          <p class="text-slate-500 italic text-xs leading-relaxed font-serif">
+                             "{{ res.transcription || res.text }}"
+                          </p>
+                       </div>
+                    </div>
+                 }
+              </div>
+
+            </div>
+          </div>
+        </section>
+      }
+
+    </div>
+  </main>
+</div>

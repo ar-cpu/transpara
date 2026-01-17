@@ -1,0 +1,139 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+env/
+ENV/
+
+# Flask
+instance/
+.webassets-cache
+
+# Environment variables (CRITICAL: never commit these!)
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+migrations/versions/*.pyc
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node / Angular
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+tmp/
+.angular/
+.sass-cache/
+
+# Docker
+*.pid
+*.seed
+*.log
+
+# Uploads
+uploads/
+/tmp/
+*.tmp
+
+# Models (if you want to version control separately)
+# Uncomment if model file is large
+# *.pkl
+
+# SSL Certificates (DO NOT commit)
+*.key
+*.crt
+*.pem
+*.csr
+nginx/ssl/*.key
+nginx/ssl/*.crt
+nginx/ssl/*.pem
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+*.tfvars
+
+# Backup files
+*.bak
+*.backup
+*.sql.gz
+
+# OS
+Thumbs.db
+.DS_Store
+nul
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+coverage.xml
+*.cover
+
+# Documentation builds
+docs/_build/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Redis dumps
+dump.rdb
+
+# Production secrets
+secrets/
+.secrets/
+
+# Sensitive data
+*.csv
+*.xlsx
+**/data/
+
+# Security documentation (contains implementation details)
+SECURITY.md

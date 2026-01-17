@@ -1,0 +1,8 @@
+{
+  "name": "Transpara Bias Detector",
+  "description": "Professional AI-powered political bias detection system for text, audio, and video analysis.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
