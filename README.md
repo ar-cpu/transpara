@@ -6,11 +6,11 @@ A machine learning system that analyzes political content to detect bias and ext
 
 Transpara uses two separate machine learning models working together:
 
-**The Political Bias Detector** analyzes text and classifies it as left-leaning, centrist, or right-leaning. It's trained on a comprehensive dataset of political statements and uses a Random Forest classifier with 900 decision trees. The model doesn't just count keywords—it analyzes linguistic patterns, sentiment, writing style, argumentation structure, and readability metrics to make its prediction.
+**The Political Bias Detector** analyzes text and classifies it as left-leaning, centrist, or right-leaning. It's trained on a comprehensive dataset of political statements and uses a Random Forest classifier with 900 decision trees. It analyzes linguistic patterns, sentiment, writing style, argumentation structure, and readability metrics to make its prediction.
 
 **The Extremism Detector** scans for anti-American or extremist content. This model specifically looks for violent rhetoric, hate speech, conspiracy theories, religious extremism, racial supremacy language, and anti-government sedition. It uses pattern matching combined with machine learning to identify dangerous content that goes beyond normal political discourse.
 
-Both models work on any text input—direct entry, extracted from PDFs or Word documents, or transcribed from audio/video using OpenAI's Whisper.
+Both models work on any text input, direct entry, extracted from PDFs or Word documents, or transcribed from audio/video using OpenAI's Whisper.
 
 ## How the Models Work
 
