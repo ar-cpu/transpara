@@ -1,4 +1,4 @@
-# Python
+# python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -23,30 +23,32 @@ MANIFEST
 venv/
 env/
 ENV/
+.venv/
 
-# Flask
+# flask
 instance/
 .webassets-cache
 
-# Environment variables (CRITICAL: never commit these!)
+# environment variables
 .env
 .env.local
 .env.*.local
 backend/.env
 frontend/.env
 
-# Database
+# database
 *.db
 *.sqlite
 *.sqlite3
 migrations/versions/*.pyc
 
-# Logs
+# logs
 *.log
 logs/
 *.log.*
+backend_logs.txt
 
-# IDE
+# ide
 .vscode/
 .idea/
 *.swp
@@ -54,30 +56,30 @@ logs/
 *~
 .DS_Store
 
-# Node / Angular
+# node / angular
 node_modules/
 npm-debug.log
 yarn-error.log
-dist/
+frontend/dist/
 tmp/
 .angular/
 .sass-cache/
 
-# Docker
+# docker
 *.pid
 *.seed
-*.log
 
-# Uploads
+# uploads
 uploads/
+backend/uploads/
 /tmp/
 *.tmp
 
-# Models (if you want to version control separately)
-# Uncomment if model file is large
-# *.pkl
+# trained models (large files)
+*.pkl
+models/*.pkl
 
-# SSL Certificates (DO NOT commit)
+# ssl certificates
 *.key
 *.crt
 *.pem
@@ -86,7 +88,7 @@ nginx/ssl/*.key
 nginx/ssl/*.crt
 nginx/ssl/*.pem
 
-# Terraform
+# terraform
 *.tfstate
 *.tfstate.*
 .terraform/
@@ -94,17 +96,17 @@ nginx/ssl/*.pem
 terraform.tfvars
 *.tfvars
 
-# Backup files
+# backup files
 *.bak
 *.backup
 *.sql.gz
 
-# OS
+# os
 Thumbs.db
 .DS_Store
 nul
 
-# Testing
+# testing
 .coverage
 htmlcov/
 .pytest_cache/
@@ -112,10 +114,10 @@ htmlcov/
 coverage.xml
 *.cover
 
-# Documentation builds
+# docs build
 docs/_build/
 
-# Jupyter Notebooks
+# jupyter
 .ipynb_checkpoints
 
 # mypy
@@ -123,17 +125,18 @@ docs/_build/
 .dmypy.json
 dmypy.json
 
-# Redis dumps
+# redis
 dump.rdb
 
-# Production secrets
+# secrets
 secrets/
 .secrets/
 
-# Sensitive data
-*.csv
+# data files (keep sample data only)
+data/*.csv
+!data/sample_*.csv
+backend/*.csv
 *.xlsx
-**/data/
 
-# Security documentation (contains implementation details)
-SECURITY.md
+# claude
+.claude/
