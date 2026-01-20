@@ -280,4 +280,4 @@ The models will automatically improve with more diverse training data.
 
 ## License
 
-MIT - Use this however you want
+MIT
